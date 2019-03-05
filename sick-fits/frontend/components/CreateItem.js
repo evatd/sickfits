@@ -31,6 +31,7 @@ const CREATE_ITEM_MUTATION = gql`
 class CreateItem extends Component {
   // add our state, to render sth out
   // for testing purposes
+
   state = {
     title: "Cool Shoes",
     description: "I love those shoes",
@@ -38,7 +39,6 @@ class CreateItem extends Component {
     largeImage: "large-dog.jpg",
     price: 1000
   };
-
   handleChange = e => {
     const { name, type, value } = e.target;
     const val = type === "number" ? parseFloat(value) : value;
@@ -46,6 +46,34 @@ class CreateItem extends Component {
     // [name] can be price, title, description (as in htmlFor)
     // and this is our value
     this.setState({ [name]: val });
+  };
+
+  uploadFile = async e => {
+    // first log that out, see if this method runs onChange
+    console.log("uploading file...");
+    const files = e.target.files;
+    // prep the data
+    const data = new FormData();
+    data.append("file", files[0]);
+    // the argument needed by cloudinary
+    data.append("upload_preset", "sickfits");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dotu5cxq6/image/upload",
+      {
+        method: "POST",
+        // the actual file
+        body: data
+      }
+    );
+    // converts the response we get to json
+    const file = await res.json();
+    console.log(file);
+    this.setState({
+      image: file.secure_url,
+      // secondary transform for large images
+      largeImage: file.eager[0].secure_url
+    });
   };
   render() {
     return (
@@ -67,6 +95,27 @@ class CreateItem extends Component {
           >
             <Error error={error} />
             <fieldset disabled={loading} aria-busy={loading}>
+              <label htmlFor="file">
+                Image
+                <input
+                  type="file"
+                  id="file"
+                  name="file"
+                  placeholder="Upload an image"
+                  required
+                  onChange={this.uploadFile}
+                />
+                {/* // check for image, there might be a gap between 
+                // the uplaod and the render */}
+                {this.state.image && (
+                  <img
+                    width="200"
+                    src={this.state.image}
+                    alt="Upload Preview"
+                  />
+                )}
+              </label>
+
               <label htmlFor="title">
                 Title
                 <input
