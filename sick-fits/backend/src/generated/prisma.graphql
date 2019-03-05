@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/eva-tkautz-6631fb/sickfits/dev
-# timestamp: Tue Mar 05 2019 10:09:55 GMT+0000 (GMT)
+# timestamp: Tue Mar 05 2019 10:39:28 GMT+0000 (GMT)
 
 type AggregateItem {
   count: Int!
@@ -14,8 +14,6 @@ type BatchPayload {
   count: Long!
 }
 
-scalar DateTime
-
 type Item implements Node {
   id: ID!
   title: String!
@@ -23,9 +21,6 @@ type Item implements Node {
   image: String
   largeImage: String
   price: Int!
-  createAt: DateTime!
-  updatedAt: DateTime!
-  user: User!
 }
 
 """A connection to a list of items."""
@@ -44,8 +39,6 @@ input ItemCreateInput {
   image: String
   largeImage: String
   price: Int!
-  createAt: DateTime!
-  user: UserCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -70,8 +63,6 @@ enum ItemOrderByInput {
   largeImage_DESC
   price_ASC
   price_DESC
-  createAt_ASC
-  createAt_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -85,8 +76,6 @@ type ItemPreviousValues {
   image: String
   largeImage: String
   price: Int!
-  createAt: DateTime!
-  updatedAt: DateTime!
 }
 
 type ItemSubscriptionPayload {
@@ -134,8 +123,6 @@ input ItemUpdateInput {
   image: String
   largeImage: String
   price: Int
-  createAt: DateTime
-  user: UserUpdateOneRequiredInput
 }
 
 input ItemUpdateManyMutationInput {
@@ -144,7 +131,6 @@ input ItemUpdateManyMutationInput {
   image: String
   largeImage: String
   price: Int
-  createAt: DateTime
 }
 
 input ItemWhereInput {
@@ -378,51 +364,6 @@ input ItemWhereInput {
 
   """All values greater than or equal the given value."""
   price_gte: Int
-  createAt: DateTime
-
-  """All values that are not equal to given value."""
-  createAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createAt_gte: DateTime
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-  user: UserWhereInput
 }
 
 input ItemWhereUniqueInput {
@@ -436,18 +377,18 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createItem(data: ItemCreateInput!): Item!
   createUser(data: UserCreateInput!): User!
-  updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item
+  createItem(data: ItemCreateInput!): Item!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  deleteItem(where: ItemWhereUniqueInput!): Item
+  updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item
   deleteUser(where: UserWhereUniqueInput!): User
-  upsertItem(where: ItemWhereUniqueInput!, create: ItemCreateInput!, update: ItemUpdateInput!): Item!
+  deleteItem(where: ItemWhereUniqueInput!): Item
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  updateManyItems(data: ItemUpdateManyMutationInput!, where: ItemWhereInput): BatchPayload!
+  upsertItem(where: ItemWhereUniqueInput!, create: ItemCreateInput!, update: ItemUpdateInput!): Item!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  deleteManyItems(where: ItemWhereInput): BatchPayload!
+  updateManyItems(data: ItemUpdateManyMutationInput!, where: ItemWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyItems(where: ItemWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -478,12 +419,12 @@ type PageInfo {
 }
 
 type Query {
-  items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  item(where: ItemWhereUniqueInput!): Item
+  items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item]!
   user(where: UserWhereUniqueInput!): User
-  itemsConnection(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemConnection!
+  item(where: ItemWhereUniqueInput!): Item
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  itemsConnection(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -493,8 +434,8 @@ type Query {
 }
 
 type Subscription {
-  item(where: ItemSubscriptionWhereInput): ItemSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  item(where: ItemSubscriptionWhereInput): ItemSubscriptionPayload
 }
 
 type User implements Node {
@@ -516,11 +457,6 @@ type UserConnection {
 input UserCreateInput {
   name: String!
   email: String!
-}
-
-input UserCreateOneInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -590,11 +526,6 @@ input UserSubscriptionWhereInput {
   node: UserWhereInput
 }
 
-input UserUpdateDataInput {
-  name: String
-  email: String
-}
-
 input UserUpdateInput {
   name: String
   email: String
@@ -603,18 +534,6 @@ input UserUpdateInput {
 input UserUpdateManyMutationInput {
   name: String
   email: String
-}
-
-input UserUpdateOneRequiredInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
-}
-
-input UserUpsertNestedInput {
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
 }
 
 input UserWhereInput {
