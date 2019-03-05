@@ -30,8 +30,7 @@ const CREATE_ITEM_MUTATION = gql`
 
 class CreateItem extends Component {
   // add our state, to render sth out
-  // for testing purposes
-
+  // have some default values, testing
   state = {
     title: "Cool Shoes",
     description: "I love those shoes",
@@ -87,6 +86,8 @@ class CreateItem extends Component {
               const res = await createItem();
               // change them to the single item page
               console.log(res);
+              // we want the url to be generated programmatically
+              // using an item id
               Router.push({
                 pathname: "/item",
                 query: { id: res.data.createItem.id }
@@ -105,8 +106,8 @@ class CreateItem extends Component {
                   required
                   onChange={this.uploadFile}
                 />
-                {/* // check for image, there might be a gap between 
-                // the uplaod and the render */}
+                {/* check for image, there might be a gap between 
+                the uplaod and the render */}
                 {this.state.image && (
                   <img
                     width="200"
