@@ -9,8 +9,13 @@ type Mutation {
     image: String
     largeImage: String
   ): Item!
+# not requiring these, we might not be passing in e..g title
+# it expresses our epxectations, reminding me of propTypes isRequired
+  updateItem(id: ID!, title: String, description: String, price: Int): Item!
 }
 
 type Query {
   items: [Item]!
+  # based on a query that already exists in the generated prisma.graphql
+  item(where: ItemWhereUniqueInput!): Item
 }
