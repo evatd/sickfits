@@ -9,9 +9,10 @@ type Mutation {
     image: String
     largeImage: String
   ): Item!
-# not requiring these, we might not be passing in e..g title
-# it expresses our epxectations, reminding me of propTypes isRequired
+  # not requiring these, we might not be passing in e..g title
+  # it expresses our epxectations, reminding me of propTypes isRequired
   updateItem(id: ID!, title: String, description: String, price: Int): Item!
+  deleteItem(id: ID!): Item
 }
 
 type Query {
