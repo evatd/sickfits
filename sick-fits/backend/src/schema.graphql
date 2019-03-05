@@ -9,14 +9,20 @@ type Mutation {
     image: String
     largeImage: String
   ): Item!
-  # not requiring these, we might not be passing in e..g title
-  # it expresses our epxectations, reminding me of propTypes isRequired
   updateItem(id: ID!, title: String, description: String, price: Int): Item!
   deleteItem(id: ID!): Item
 }
 
 type Query {
-  items: [Item]!
-  # based on a query that already exists in the generated prisma.graphql
+  items(
+    where: ItemWhereInput
+    orderBy: ItemOrderByInput
+    skip: Int
+    first: Int
+  ): [Item]!
+  # check prisma.graphql to see what ItemWhereUniqueInput is expecting
   item(where: ItemWhereUniqueInput!): Item
+  # returns an aggregate data about the data itself:
+  # we need to know how many items we have available to us, for pagination
+  itemsConnection(where: ItemWhereInput): ItemConnection!
 }
