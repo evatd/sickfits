@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import styled from 'styled-components';
-import Item from './Item';
+import React, { Component } from "react";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+import styled from "styled-components";
+import Item from "./Item";
 
-// match these names: of mutation and query.
-// write the query as if in the playground
+// match these names: of mutation and query
+// write the query as in the playground
 const ALL_ITEMS_QUERY = gql`
   query ALL_ITEMS_QUERY {
     items {
@@ -40,7 +40,11 @@ class Items extends Component {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
             return (
-              <ItemsList>{data.items.map(item => <Item item={item} key={item.id} />)}</ItemsList>
+              <ItemsList>
+                {data.items.map(item => (
+                  <Item item={item} key={item.id} />
+                ))}
+              </ItemsList>
             );
           }}
         </Query>
@@ -50,3 +54,4 @@ class Items extends Component {
 }
 
 export default Items;
+export { ALL_ITEMS_QUERY };
