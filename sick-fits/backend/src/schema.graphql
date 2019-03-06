@@ -9,8 +9,22 @@ type Mutation {
     image: String
     largeImage: String
   ): Item!
+  updateItem(id: ID!, title: String, description: String, price: Int): Item!
+  deleteItem(id: ID!): Item
 }
 
 type Query {
-  items: [Item]!
+  # how many items you want, which ones, etc
+  # this is then used in the ALL_ITEMS_QUERY in components/items
+  items(
+    where: ItemWhereInput
+    orderBy: ItemOrderByInput
+    skip: Int
+    first: Int
+  ): [Item]!
+  # check prisma.graphql to see what ItemWhereUniqueInput is expecting
+  item(where: ItemWhereUniqueInput!): Item
+  # returns an aggregate data about the data itself:
+  # we need to know how many items we have available to us, for pagination
+  itemsConnection(where: ItemWhereInput): ItemConnection!
 }

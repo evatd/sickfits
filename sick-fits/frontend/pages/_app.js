@@ -16,6 +16,7 @@ class MyApp extends App {
       pageProps = await Component.getInitialProps(ctx);
     }
     // this exposes the query to the user
+    // i.e. to every single page
     pageProps.query = ctx.query;
     return { pageProps };
   }
