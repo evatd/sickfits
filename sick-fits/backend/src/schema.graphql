@@ -14,6 +14,8 @@ type Mutation {
 }
 
 type Query {
+  # how many items you want, which ones, etc
+  # this is then used in the ALL_ITEMS_QUERY in components/items
   items(
     where: ItemWhereInput
     orderBy: ItemOrderByInput

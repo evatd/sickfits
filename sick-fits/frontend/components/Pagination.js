@@ -7,10 +7,10 @@ import PaginationStyles from "./styles/PaginationStyles";
 import { perPage } from "../config";
 
 const PAGINATION_QUERY = gql`
+  # we want to know how many items are in the database
+  # other logic - how many per page is handled in
+  # the component
   query PAGINATION_QUERY {
-    # we want to know how many items are in the database
-    # other logic - how many per page is handled in
-    # the component
     itemsConnection {
       aggregate {
         count
